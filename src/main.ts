@@ -1,75 +1,55 @@
-import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import cookieParser from 'cookie-parser';
-import compression from 'compression';
-import helmet from 'helmet';
-import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
-import { ExceptionsFilter } from '@tresdoce-nestjs-toolkit/paas';
-import { otelProvider } from '@tresdoce-nestjs-toolkit/tracing';
+#!/usr/bin/env node
 
-import { AppModule } from './app.module';
-import { config } from './config';
+import { CommandFactory } from 'nest-commander';
+import updateNotifier, { UpdateInfo, UpdateNotifier } from 'update-notifier';
+import Configstore from 'configstore';
+import chalk from 'chalk';
+
+import { CliModule } from './cli.module';
+import * as PACKAGE_JSON from '../package.json';
 
 async function bootstrap(): Promise<void> {
-  otelProvider(config().tracing);
-  const app = await NestFactory.create(AppModule, {
-    logger: new Logger(),
+  const config = new Configstore(`${PACKAGE_JSON.name}/config`, {});
+  config.set('version', `v${PACKAGE_JSON.version}`);
+  config.set('pkgManager', 'yarn');
+
+  if (!config.get('userName')) {
+    config.set('userName', process.env.USER ?? 'Desconocido');
+  }
+
+  // 🛎️ Notificator de versión
+  const notifier: UpdateNotifier = updateNotifier({
+    pkg: PACKAGE_JSON,
+    updateCheckInterval: 1000,
   });
-  const appConfig = app.get<ConfigService>(ConfigService)['internalConfig']['config'];
-  const { server, swagger, project } = appConfig;
-  const port: number = parseInt(server.port, 10) || 8080;
 
-  app.setGlobalPrefix(`${server.context}`);
+  if (notifier.update) {
+    const pkgManager: string = config.get('pkgManager') as string;
+    const { current, latest }: UpdateInfo = notifier.update;
 
-  app.use([cookieParser(), compression(), helmet()]);
-  app.useGlobalFilters(new ExceptionsFilter(appConfig));
+    const updateCommand: string =
+      pkgManager === 'npm'
+        ? `npm i -g ${PACKAGE_JSON.name}`
+        : `yarn global add ${PACKAGE_JSON.name}`;
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      validatorPackage: require('@nestjs/class-validator'),
-      transformerPackage: require('class-transformer'),
-      whitelist: true,
-      forbidUnknownValues: true,
-      forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true,
-      },
-    }),
-  );
+    const message: string =
+      `🎉 ${chalk.cyan.bold('New version available!')} ${chalk.dim(`v${current}`)} ${chalk.reset('≫')} ${chalk.green(`v${latest}`)}\n\n` +
+      `${chalk.yellow(' It is recommended to update to access new features and improve stability. ')}\n\n` +
+      `💻 Run "${chalk.blueBright(updateCommand)}" to update 🚀`;
 
-  if (swagger.enabled) {
-    const config = new DocumentBuilder()
-      .setTitle(`${project.name}`)
-      .setVersion(`${project.version}`)
-      .setDescription(`Swagger - ${project.description}`)
-      .setExternalDoc('Documentation', project.homepage)
-      .setContact(project.author.name, project.author.url, project.author.email)
-      .addServer(`/${server.context}`)
-      .build();
-    const document: OpenAPIObject = SwaggerModule.createDocument(app, config, {
-      ignoreGlobalPrefix: true,
-      autoTagControllers: true,
-    });
-    SwaggerModule.setup(`${server.context}/${swagger.path}`, app, document, {});
-  }
-
-  if (server.corsEnabled) {
-    app.enableCors({
-      origin: server.origins,
-      allowedHeaders: `${server.allowedHeaders}`,
-      methods: `${server.allowedMethods}`,
-      credentials: server.corsCredentials,
+    notifier.notify({
+      defer: true,
+      message,
     });
   }
 
-  await app.listen(port, async (): Promise<void> => {
-    const appServer: string = `http://localhost:${port}/${server.context}`;
-    if (swagger.enabled) {
-      Logger.log(`📚 Swagger is running on: ${appServer}/${swagger.path}`, `${project.name}`);
-    }
-    Logger.log(`🚀 Application is running on: ${appServer}`, `${project.name}`);
+  await CommandFactory.run(CliModule, {
+    logger: ['warn', 'error'],
   });
 }
 
-(async (): Promise<void> => await bootstrap())();
+(async (): Promise<void> =>
+  await bootstrap().catch((_error: Error) => {
+    console.error(_error);
+    process.exit(1);
+  }))();
