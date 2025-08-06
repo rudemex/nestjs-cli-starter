@@ -12,4 +12,9 @@ export default registerAs('config', (): any => ({
     homepage: PACKAGE_JSON.homepage,
     command: Object.keys(PACKAGE_JSON.bin || {})[0],
   },
+  pkgManager: 'yarn',
+  envs: ['local', 'test', 'develop', 'homo', 'stg', 'prod'],
+  segment: {
+    key: 'lD04WanR7n6ZDDCUNmmTWzTFfoiWZaa6',
+  },
 }));

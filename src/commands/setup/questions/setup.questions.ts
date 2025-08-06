@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { Question, QuestionSet } from 'nest-commander';
 import chalk from 'chalk';
 import { config } from '../../../config';
-import { ConfigType } from '@nestjs/config';
 
 @QuestionSet({ name: 'setup' })
 @Injectable()
