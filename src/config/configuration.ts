@@ -14,7 +14,4 @@ export default registerAs('config', (): any => ({
   },
   pkgManager: 'yarn',
   envs: ['local', 'test', 'develop', 'homo', 'stg', 'prod'],
-  segment: {
-    key: 'lD04WanR7n6ZDDCUNmmTWzTFfoiWZaa6',
-  },
 }));

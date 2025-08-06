@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import { CliModule } from './cli.module';
 import * as PACKAGE_JSON from '../package.json';
 
-async function bootstrap(): Promise<void> {
+const bootstrap = async (): Promise<void> => {
   const config = new Configstore(`${PACKAGE_JSON.name}/config`, {});
   config.set('version', `v${PACKAGE_JSON.version}`);
   config.set('pkgManager', 'yarn');
@@ -17,7 +17,6 @@ async function bootstrap(): Promise<void> {
     config.set('userName', process.env.USER ?? 'Desconocido');
   }
 
-  // 🛎️ Notificator de versión
   const notifier: UpdateNotifier = updateNotifier({
     pkg: PACKAGE_JSON,
     updateCheckInterval: 1000,
@@ -44,12 +43,14 @@ async function bootstrap(): Promise<void> {
   }
 
   await CommandFactory.run(CliModule, {
+    cliName: `${PACKAGE_JSON.name}`,
+    version: `v${PACKAGE_JSON.version}`,
     logger: ['warn', 'error'],
   });
-}
+};
 
 (async (): Promise<void> =>
-  await bootstrap().catch((_error: Error) => {
+  await bootstrap().catch((_error: Error): never => {
     console.error(_error);
     process.exit(1);
   }))();
