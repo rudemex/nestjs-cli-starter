@@ -39,10 +39,7 @@
     "pre-commit": "lint-staged",
     "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "test:husky": "jest --runInBand --forceExit --coverage",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
     "release": "standard-version",
     "prepare": "husky",
     "unlink": "yarn unlink"

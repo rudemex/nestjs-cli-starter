@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
 import { SetupCommand } from './commands/setup.command';
-import { SetupQuestions } from './questions/setup.questions';
+import { SetupQuestion } from './questions/setup.question';
 import { TelemetryService } from '../../telemetry/telemetry.service';
 
 @Module({
-  providers: [SetupCommand, SetupQuestions, TelemetryService],
+  providers: [SetupCommand, SetupQuestion, TelemetryService],
 })
 export class SetupModule {}

@@ -6,7 +6,7 @@ import { config } from '../../../config';
 
 @QuestionSet({ name: 'setup' })
 @Injectable()
-export class SetupQuestions {
+export class SetupQuestion {
   constructor(@Inject(config.KEY) private readonly cliConfig: ConfigType<typeof config>) {}
 
   @Question({
@@ -45,7 +45,7 @@ export class SetupQuestions {
     type: 'list',
     name: 'env',
     message: '¿Qué entorno querés configurar?',
-    choices(this: SetupQuestions) {
+    choices(this: SetupQuestion) {
       return this.cliConfig.envs;
     },
     default: 'local',
