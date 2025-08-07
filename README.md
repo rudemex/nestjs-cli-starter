@@ -114,8 +114,8 @@ Para cambiar el nombre del comando CLI que se ejecuta desde terminal, modificá 
 
 ### 🚀 Probar la CLI localmente
 
-Primero ejecutas el script `build`, una vez que finaliza el script se autoejecuta el script `postbuild` que se encarga de hacer
-ejecutable el bundle final y luego lo linkea como paquete. 
+Primero ejecutas el script `build:local`, una vez que finaliza el script, este se encarga de hacer ejecutable el bundle 
+final con el script `postbuild` y luego lo linkea como paquete. 
 
 Para probar el comando localmente debes ejecutar el comando en la terminal:
 
@@ -137,7 +137,7 @@ yarn global add file:.
 
 ## 💻 Scripts
 
-Realiza el build de la aplicación
+Realiza el build de la CLI
 
 ```
 yarn build
@@ -146,13 +146,22 @@ yarn build
 npm run build
 ```
 
-Hace que el build final sea ejecutable y se linkee como package de node
+Hace que el bundle generado por el build sea ejecutable
 
 ```
 yarn postbuild
 ```
 ```
 npm run postbuild
+```
+
+Realiza el build de la CLI, lo transforma en ejecutable y lo linkea como paquete para probar localmente
+
+```
+yarn build:local
+```
+```
+npm run build:local
 ```
 
 Inicia los test con coverage

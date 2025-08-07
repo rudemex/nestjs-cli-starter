@@ -29,6 +29,8 @@
     "clean": "rimraf coverage dist node_modules junit.xml test-report.xml yarn.lock package-lock.json",
     "prebuild": "rimraf dist",
     "build": "cross-env NODE_ENV=build nest build",
+    "build:local": "yarn build && yarn link",
+    "postbuild": "chmod +x dist/main.js",
     "lint": "eslint '{src,apps,libs,test}/**/*.ts' --fix",
     "lint:check": "eslint '{src,apps,libs,test}/**/*.ts'",
     "format": "prettier --write '{src,apps,libs,test,fixtures}/**/*.{ts,js,json,json5,jsonc,yml,yaml,md}'",
@@ -43,7 +45,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "release": "standard-version",
     "prepare": "husky",
-    "postbuild": "chmod +x dist/main.js && yarn link",
     "unlink": "yarn unlink"
   },
   "prettier": {
