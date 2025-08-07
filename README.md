@@ -51,13 +51,14 @@ robusta, organizada y fácil de mantener.</p>
 - Uso de `inquirer`, `chalk`, `ora`, `cli-table3` y `update-notifier` para mejorar la experiencia de usuario
 - Separación de lógica de interacción y lógica de negocio por cada comando
 - Configuración persistente con `configstore`
-- Configuración centralizada
+- Configuración centralizada con `ConfigModule`
 
 ## Glosario
 
 - [📝 Requisitos](#basic-requirements)
 - [🛠️ Instalar dependencias](#install-dependencies)
 - [⚙️ Configuración](#configurations)
+- [🚀 Probar la CLI localmente](#probar-la-cli-localmente)
 - [💻 Scripts](#scripts)
 - [📤 Commits](#commits)
 - [📄 Changelog](./CHANGELOG.md)
@@ -77,9 +78,6 @@ robusta, organizada y fácil de mantener.</p>
 <a name="install-dependencies"></a>
 
 ## 🛠️ Instalar dependencias
-
-Cuando tenemos los requisitos básicos, clonamos el repositorio, vamos a la carpeta del proyecto e instalamos sus
-dependencias.
 
 ```
 yarn install
@@ -112,21 +110,26 @@ Para cambiar el nombre del comando CLI que se ejecuta desde terminal, modificá 
 }
 ```
 
+<a name="probar-la-cli-localmente"></a>
+
 ### 🚀 Probar la CLI localmente
 
-Primero ejecutas el script `build`, una vez que finaliza el script se ejecuta el script `postbuild` que se encarga de hacer
-ejecutable el bundle final y luego lo linkea como paquete, para probarlo podes ejecutar el comando:
+Primero ejecutas el script `build`, una vez que finaliza el script se autoejecuta el script `postbuild` que se encarga de hacer
+ejecutable el bundle final y luego lo linkea como paquete. 
 
-```
+Para probar el comando localmente debes ejecutar el comando en la terminal:
+
+```shell
 nestjs-cli-starter --help
 ```
 
-En el caso de que falle y no te reconozca el comando, es muy probable que tengas que instalarlo globalmente (unica vez),
+En caso de que falle y no te reconozca el comando, es muy probable que tengas que instalarlo globalmente (unica vez),
 y luego volver a realizar los pasos anteriores.
 
-```
+```shell
 npm i -g .
-
+```
+```shell
 yarn global add file:.
 ```
 
