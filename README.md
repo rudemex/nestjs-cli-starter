@@ -20,8 +20,8 @@
     <a href="https://app.codecov.io/gh/rudemex/nestjs-cli-starter/" target="_blank">
         <img alt="Codecov" src="https://img.shields.io/codecov/c/github/rudemex/nestjs-cli-starter?logoColor=FFFFFF&logo=Codecov&labelColor=#F01F7A">
     </a>
-    <a href="https://sonarcloud.io/summary/new_code?id=rudemex_nestjs-starter" target="_blank">    
-        <img src="https://sonarcloud.io/api/project_badges/measure?project=rudemex_nestjs-starter&metric=alert_status" alt="sonarcloud">
+    <a href="https://sonarcloud.io/summary/new_code?id=rudemex_nestjs-cli-starter" target="_blank">    
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=rudemex_nestjs-cli-starter&metric=alert_status" alt="sonarcloud">
     </a>    
     <a href="https://snyk.io/test/github/rudemex/nestjs-cli-starter" target="_blank">
         <img src="https://snyk.io/test/github/rudemex/nestjs-cli-starter/badge.svg" alt="Snyk">

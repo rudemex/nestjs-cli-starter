@@ -45,10 +45,10 @@ jobs:
       - name: "📦 Install packages"
         run: yarn install
 
-      - name: "🔦 Lint"
-        run: yarn lint
-
       - name: "💅 Lint"
+        run: yarn lint:format:check
+
+      - name: "🔨 Build"
         run: yarn build
 
       - name: "👨‍💻 Run Test"

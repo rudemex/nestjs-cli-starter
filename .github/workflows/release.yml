@@ -14,15 +14,13 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   GITHUB_EMAIL: ${{ secrets.GH_EMAIL }}
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   release:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '20.19.3' ]
+        node: [ '22.17.0' ]
     name: "Release"
     steps:
       - name: "⚙ Setup NodeJS v${{ matrix.node }}"
@@ -58,7 +56,7 @@ jobs:
         run: yarn install
 
       - name: "💅 Lint"
-        run: yarn lint
+        run: yarn lint:format:check
 
       - name: "🔨 Build"
         run: yarn build
@@ -104,7 +102,7 @@ jobs:
       #  env:
       #    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: "🏷️ Create Release"
+      - name: '🏷️ Create Release'
         id: Release
         run: |
           git config --global user.name "GitHub CI/CD bot"
@@ -118,45 +116,46 @@ jobs:
           tag=$(git describe --tags $(git rev-list --tags --max-count=1))
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
-      - name: "📄 Create Changelog"
-        uses: Bullrich/generate-release-changelog@2.0.2
+      - name: '📄 Create Changelog'
         id: Changelog
-        env:
-          REPO: ${{ github.repository }}
+        run: |
+          git fetch --tags
+          tag=$(git tag --sort version:refname | tail -n 2 | head -n 1)
+          if [ "$tag" ]; then
+            changelog=$(git log --oneline --no-decorate "$tag"..HEAD)
+          else
+            changelog=$(git log --oneline --no-decorate)
+          fi
 
-      - name: "🚀 Publish Release"
+          changelog="${changelog//'%'/'%25'}"
+          changelog="${changelog//$'\n'/'%0A' - }"
+          changelog=" - ${changelog//$'\r'/'%0D'}"
+
+          echo "changelog=$changelog" >> "$GITHUB_OUTPUT"
+
+      - name: '🚀 Publish Release'
         uses: actions/create-release@v1
         with:
-          tag_name: "${{steps.Release.outputs.tag}}"
-          release_name: "${{steps.Release.outputs.tag}}"
+          tag_name: '${{steps.Release.outputs.tag}}'
+          release_name: '${{steps.Release.outputs.tag}}'
           body: |
             ${{ steps.Changelog.outputs.changelog }}
-            
+
             ---
-            
+
             > 💬 All notable changes to this project will be documented in [Changelog](${{ github.event.repository.html_url }}/blob/master/CHANGELOG.md) file.
           draft: false
           prerelease: false
 
-      - name: "🔁 Rebase"
+      - name: '🔁 Rebase'
         run: |
           git remote set-url origin "https://github.com/${{ github.repository }}.git"
           git config --global user.name "GitHub CI/CD bot"
           git config --global user.email "${GITHUB_EMAIL}"
           git config pull.rebase true
           git fetch
+          git stash push -m "ci: stash standard-version changes"
           git checkout develop
           git pull
           git merge --no-ff -m "ci(rebase): merge master" origin/master
           git push -f
-
-      - name: "🐳 Docker"
-        run: |
-          docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-          docker build --build-arg NODE_VERSION=${{ matrix.node }}-alpine -t ${{ github.event.repository.name }} .
-          docker tag ${{ github.event.repository.name }} ${DOCKER_USER}/${{ github.event.repository.name }}:${{ github.sha }}
-          docker tag ${{ github.event.repository.name }} ${DOCKER_USER}/${{ github.event.repository.name }}:${{steps.Release.outputs.tag}}
-          docker tag ${{ github.event.repository.name }} ${DOCKER_USER}/${{ github.event.repository.name }}:latest
-          docker push ${DOCKER_USER}/${{ github.event.repository.name }}:${{ github.sha }}
-          docker push ${DOCKER_USER}/${{ github.event.repository.name }}:${{steps.Release.outputs.tag}}  
-          docker push ${DOCKER_USER}/${{ github.event.repository.name }}:latest

@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,7 +47,7 @@ jobs:
         run: yarn install
 
       - name: "💅 Lint"
-        run: yarn lint
+        run: yarn lint:format:check
 
       - name: "🔨 Build"
         run: yarn build
@@ -96,8 +92,3 @@ jobs:
       #  uses: snyk/actions/node@master
       #  env:
       #    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: "🐳 Docker"
-        run: |
-          docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
-          docker build --build-arg NODE_VERSION=${{ matrix.node }}-alpine -t ${{ github.event.repository.name }} .

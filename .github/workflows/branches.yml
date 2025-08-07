@@ -45,7 +45,7 @@ jobs:
         run: yarn install
 
       - name: "💅 Lint"
-        run: yarn lint
+        run: yarn lint:format:check
 
       - name: "🔨 Build"
         run: yarn build

@@ -17,6 +17,11 @@
   "homepage": "https://github.com/rudemex/nestjs-cli-starter#readme",
   "private": true,
   "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
   "bin": {
     "nestjs-cli-starter": "dist/main.js"
   },
