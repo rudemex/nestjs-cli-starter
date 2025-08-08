@@ -133,5 +133,40 @@ describe('Add Command', () => {
       expect(txt).toContain('$ cli add api -n auth-api -u https://auth.service.com -t GraphQL');
       expect(txt).toContain('Configures a SOAP integration'); // example coverage
     });
+
+    //
+
+    it('should handle empty string type and skip generate (unit)', async () => {
+      const svc = { generate: jest.fn() };
+      const cmd = new AddApiCommand(svc as any);
+      const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+      await cmd.run([], { name: 'svc', url: 'https://ok.com', type: '' });
+
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid API type'));
+      expect(svc.generate).not.toHaveBeenCalled();
+    });
+
+    it('should trim whitespace-only type and skip generate (unit)', async () => {
+      const svc = { generate: jest.fn() };
+      const cmd = new AddApiCommand(svc as any);
+      const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+      await cmd.run([], { name: 'svc', url: 'https://ok.com', type: '   ' });
+
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid API type'));
+      expect(svc.generate).not.toHaveBeenCalled();
+    });
+
+    it('should treat undefined type as invalid (unit)', async () => {
+      const svc = { generate: jest.fn() };
+      const cmd = new AddApiCommand(svc as any);
+      const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+      await cmd.run([], { name: 'svc', url: 'https://ok.com' }); // type undefined
+
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid API type'));
+      expect(svc.generate).not.toHaveBeenCalled();
+    });
   });
 });
