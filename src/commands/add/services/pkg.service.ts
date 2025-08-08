@@ -5,10 +5,10 @@ import ora, { Ora } from 'ora';
 @Injectable()
 export class AddPkgService {
   /**
-   * Ejecuta la instalación del paquete (simulada con un spinner).
+   * Simulates the installation of a package using a loading spinner.
    *
-   * @param _params - [pkgName, version?] Argumentos. El primero debe ser el nombre del paquete y el segundo la versión (opcional).
-   * @param _options - Opciones del comando (`asDev`, `pkgManager`, etc.).
+   * @param _params - Positional arguments: [0] is the package name, [1] is the optional version.
+   * @param _options - Command options (`asDev`, `pkgManager`, etc.).
    */
   async install(_params: string[], _options: Record<string, any>): Promise<void> {
     const [pkgName, version] = _params;
@@ -20,17 +20,17 @@ export class AddPkgService {
     const command = `${tool} ${fullName}`;
 
     const spinner: Ora = ora(
-      chalk.blue(`Instalando ${chalk.bold(fullName)} usando ${tool}...`),
+      chalk.blue(`Installing ${chalk.bold(fullName)} using ${tool}...`),
     ).start();
 
     try {
-      // Simula un proceso de instalación de 1.5 segundos
+      // Simulate installation delay
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      spinner.succeed(chalk.green(`✅  Paquete instalado: ${chalk.bold(fullName)}`));
+      spinner.succeed(chalk.green(`✅ Package installed: ${chalk.bold(fullName)}`));
       console.log(chalk.gray(`> ${command}`));
     } catch {
-      spinner.fail(chalk.red(`❌ Error al instalar ${chalk.bold(fullName)}`));
+      spinner.fail(chalk.red(`❌ Failed to install ${chalk.bold(fullName)}`));
     }
   }
 }
