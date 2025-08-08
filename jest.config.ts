@@ -11,6 +11,7 @@ dotenv.config({
 const config: Config = {
   ...jestConfig(),
   roots: ['<rootDir>/src/'],
+  transformIgnorePatterns: ['/node_modules/(?!chalk|ora)/'],
 };
 
 export default config;

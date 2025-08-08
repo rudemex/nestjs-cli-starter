@@ -4,13 +4,25 @@ import chalk from 'chalk';
 import { AddPkgService } from '../../services';
 
 /**
- * Subcomando que permite instalar paquetes NPM o Yarn dentro del proyecto actual.
+ * Subcommand that installs an NPM or Yarn package into the current project.
  *
- * Sintaxis: `my-cli add pkg <package> [version] [options]`
+ * Syntax: `my-cli add pkg <package> [version] [options]`
  *
- * - Utiliza NPM por defecto.
- * - Soporta instalación como `devDependency`.
- * - Admite Yarn si se especifica con `--yarn`.
+ * - Uses NPM by default.
+ * - Supports installation as a devDependency.
+ * - Allows using Yarn instead of NPM with `--yarn`.
+ *
+ * @example
+ * $ cli add pkg axios
+ * 👉 Installs 'axios' as a regular dependency using NPM
+ *
+ * @example
+ * $ cli add pkg eslint 8.50.0 --dev
+ * 👉 Installs a specific version as a development dependency
+ *
+ * @example
+ * $ cli add pkg chalk --yarn
+ * 👉 Installs 'chalk' using Yarn instead of NPM
  */
 @SubCommand({
   name: 'pkg',
@@ -18,7 +30,7 @@ import { AddPkgService } from '../../services';
   arguments: '<pkgName> [version]',
   aliases: ['package', 'install'],
   argsDescription: {
-    pkgName: 'Package name to install',
+    pkgName: 'Name of the package to install',
     version: 'Optional package version (e.g., 1.2.3)',
   },
   options: {
@@ -32,64 +44,83 @@ export class AddPkgCommand extends CommandRunner {
   }
 
   /**
-   * Ejecuta el comando `add pkg`.
+   * Executes the `add pkg` subcommand.
    *
-   * @param _params - Argumentos posicionales: [0] nombre del paquete, [1] versión opcional.
-   * @param _options - Opciones como `--dev` o `--yarn`.
+   * @param _params - Positional arguments: [0] is the package name, [1] is the optional version.
+   * @param _options - CLI options such as `--dev` or `--yarn`.
    */
   async run(_params: string[], _options: Record<string, any>): Promise<void> {
     if (!_params[0]?.trim()) {
-      console.log(chalk.red('❌ Debes especificar el nombre del paquete.'));
+      console.log(chalk.red('❌ You must specify the package name.'));
       return;
     }
 
-    await this.pkgService.install(_params, _options);
+    const normalizedOptions = {
+      asDev: _options.asDev ?? false,
+      pkgManager: _options.pkgManager ?? false,
+    };
+
+    await this.pkgService.install(_params, normalizedOptions);
   }
 
   /**
-   * Opción para instalar el paquete como devDependency.
+   * Option to install the package as a development dependency.
+   *
+   * Accepts the following values as truthy: `--dev`, `--dev=true`, `--dev=1`.
+   * If the option is passed without a value, it defaults to `true`.
+   *
+   * @param val - Value passed to the `--dev` flag.
+   * @returns `true` if the package should be installed as a devDependency.
    */
   @Option({
-    flags: '-D, --dev',
+    flags: '-D, --dev [value]',
     description: 'Install as a devDependency',
-    defaultValue: false,
     required: false,
     name: 'asDev',
   })
-  parseDev(val: string): boolean {
-    return val === 'true' || val === '1' || val === undefined;
+  parseDev(val: string | boolean | undefined): boolean {
+    if (val === undefined) return true;
+    return val === true || val === 'true' || val === '1';
   }
 
   /**
-   * Opción para usar Yarn en lugar de NPM.
+   * Option to use Yarn instead of NPM.
+   *
+   * Accepts the following values as truthy: `--yarn`, `--yarn=true`, `--yarn=1`.
+   * If the option is passed without a value, it defaults to `true`.
+   *
+   * @param val - Value passed to the `--yarn` flag.
+   * @returns `true` if Yarn should be used as the package manager.
    */
   @Option({
-    flags: '--yarn',
-    description: 'Use Yarn instead of NPM',
-    defaultValue: false,
-    required: false,
+    flags: '--yarn [value]',
     name: 'pkgManager',
+    description: 'Use Yarn instead of NPM',
+    required: false,
   })
-  parseYarn(val: string): boolean {
-    return val === 'true' || val === '1' || val === undefined;
+  parseYarn(val: string | boolean | undefined): boolean {
+    if (val === undefined) return true;
+    return val === true || val === 'true' || val === '1';
   }
 
   /**
-   * Ayuda adicional mostrada al final del comando.
+   * Displays extra help and usage examples at the bottom of the help output.
+   *
+   * @returns A string containing example usages of the subcommand.
    */
   @Help('afterAll')
   showExamples(): string {
     return `
-📦 Ejemplos:
+📦 Examples:
 
   $ cli add pkg axios
-  👉 Instala 'axios' como dependencia normal con NPM
+  👉 Installs 'axios' as a regular dependency using NPM
 
   $ cli add pkg eslint 8.50.0 --dev
-  👉 Instala versión específica como devDependency
+  👉 Installs a specific version as a devDependency
 
   $ cli add pkg chalk --yarn
-  👉 Instala 'chalk' usando Yarn
+  👉 Installs 'chalk' using Yarn
 `;
   }
 }
