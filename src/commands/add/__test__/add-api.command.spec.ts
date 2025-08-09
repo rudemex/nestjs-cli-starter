@@ -45,7 +45,7 @@ describe('Add Command', () => {
 
       expect(generateMock).toHaveBeenCalledTimes(1);
       expect(generateMock).toHaveBeenCalledWith(
-        expect.any(Array), // _params
+        expect.any(Array),
         expect.objectContaining({
           name: 'payments',
           url: 'https://api.example.com',
@@ -71,7 +71,7 @@ describe('Add Command', () => {
         expect.objectContaining({
           name: 'billing',
           url: 'https://billing.example.com',
-          type: 'SOAP', // normalized
+          type: 'SOAP',
         }),
       );
     });
@@ -131,10 +131,8 @@ describe('Add Command', () => {
         '$ cli add api --name my-api --url https://api.example.com --type REST',
       );
       expect(txt).toContain('$ cli add api -n auth-api -u https://auth.service.com -t GraphQL');
-      expect(txt).toContain('Configures a SOAP integration'); // example coverage
+      expect(txt).toContain('Configures a SOAP integration');
     });
-
-    //
 
     it('should handle empty string type and skip generate (unit)', async () => {
       const svc = { generate: jest.fn() };
@@ -163,7 +161,7 @@ describe('Add Command', () => {
       const cmd = new AddApiCommand(svc as any);
       const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-      await cmd.run([], { name: 'svc', url: 'https://ok.com' }); // type undefined
+      await cmd.run([], { name: 'svc', url: 'https://ok.com' });
 
       expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid API type'));
       expect(svc.generate).not.toHaveBeenCalled();

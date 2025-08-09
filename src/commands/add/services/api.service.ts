@@ -4,24 +4,44 @@ import ora, { Ora } from 'ora';
 import Table from 'cli-table3';
 
 /**
- * Service that displays a summary of an external API integration setup.
+ * Service responsible for simulating the setup of an external API integration.
  *
- * This service is invoked by the `add api` subcommand and prints a formatted
- * table with the provided options. It is designed to be side-effect free.
+ * This service is executed by the `add api` subcommand and:
+ * - Displays a spinner during the simulated configuration process.
+ * - Validates that required details (name, base URL, type) are provided.
+ * - Prints a formatted table summarizing the API integration settings.
+ *
+ * **Note:** This service does not generate any files or make network requests;
+ * it is purely for CLI feedback purposes.
  */
 @Injectable()
 export class AddApiService {
   /**
-   * Renders a summary table for the API integration using the provided options.
+   * Simulates the API integration setup process and displays the integration summary.
    *
-   * @param _params - Positional arguments passed to the command (unused).
-   * @param _options - Options object containing:
-   *  - `name`: string — service name/identifier.
-   *  - `url`: string — base URL of the external API.
-   *  - `type`: string — API type (e.g., REST, SOAP, GRAPHQL).
+   * @param _params - Positional arguments passed from the CLI.
+   *   - Not used in this implementation (parameters come from options).
+   *
+   * @param _options - Options object parsed from the CLI.
+   *   - `name` (`string`) – API service name or identifier.
+   *   - `url` (`string`) – Base URL of the external API.
+   *   - `type` (`string`) – API type (REST, SOAP, GRAPHQL, etc.).
+   *
+   * @returns A `Promise<void>` that resolves after displaying the integration summary.
+   *
+   * @example
+   * ```ts
+   * await addApiService.generate([], {
+   *   name: 'payment-service',
+   *   url: 'https://api.example.com/payments',
+   *   type: 'REST'
+   * });
+   * // → Spinner starts, then shows a summary table
+   * ```
+   *
+   * @throws {Error} Only if an unexpected runtime error occurs during processing.
    */
   async generate(_params: string[], _options: Record<string, any>): Promise<void> {
-    // Defensive extraction & normalization (command already validates, but let's be safe)
     const name = String(_options?.name ?? '').trim();
     const url = String(_options?.url ?? '').trim();
     const type = String(_options?.type ?? '')
@@ -33,7 +53,6 @@ export class AddApiService {
     ).start();
 
     try {
-      // Optional small delay to emulate work
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (!name || !url || !type) {
@@ -57,9 +76,8 @@ export class AddApiService {
 
       console.log(table.toString());
       console.log(chalk.green('\n✅  Your API integration setup is ready.\n'));
-    } catch (err) {
+    } catch {
       spinner.fail(chalk.red('❌ Failed to configure the API integration'));
-      console.error(chalk.red((err as Error)?.message ?? err));
     }
   }
 }
