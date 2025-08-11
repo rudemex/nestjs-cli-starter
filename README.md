@@ -6,7 +6,7 @@
 <p align="center">
     <img src="https://img.shields.io/static/v1.svg?style=flat&label=NodeJS&message=v20.19.3&labelColor=339933&color=757575&logoColor=FFFFFF&logo=Node.js" alt="Node.js"/>
     <img src="https://img.shields.io/static/v1.svg?style=flat&label=NPM&message=v11.2.0&labelColor=CB3837&logoColor=FFFFFF&color=757575&logo=npm" alt="Npm"/>
-    <img src="https://img.shields.io/static/v1.svg?style=flat&label=NestJS&message=v11.1.5&labelColor=E0234E&logoColor=FFFFFF&color=757575&logo=Nestjs" alt="NestJs"/>
+    <img src="https://img.shields.io/static/v1.svg?style=flat&label=NestJS&message=v11.1.6&labelColor=E0234E&logoColor=FFFFFF&color=757575&logo=Nestjs" alt="NestJs"/>
     <a href="https://github.com/rudemex/nestjs-cli-starter/releases/latest">
         <img alt="Last Release" src="https://img.shields.io/github/v/tag/rudemex/nestjs-cli-starter?label=release">
     </a>
@@ -72,8 +72,7 @@ robusta, organizada y fácil de mantener.</p>
 
 - NodeJS ≥ 20.19.3 ([descargar](https://nodejs.org/es/download/))
 - Yarn ≥ 1.22.22 o Npm ≥ 11.2.0
-- NestJS ≥ v11.1.5 ([Documentación](https://nestjs.com/))
-
+- NestJS ≥ v11.1.6 ([Documentación](https://nestjs.com/))
 
 <a name="install-dependencies"></a>
 
@@ -92,7 +91,7 @@ npm install
 ## ⚙️ Configuración
 
 Este proyecto no utiliza archivos `.env`, ni `validationSchema`, toda la configuración a nivel CLI se carga en el archivo
-`configuration.ts`, que luego es disponibilizado por el `ConfigModule` de NestJS para ser consumido en todo el proyecto 
+`configuration.ts`, que luego es disponibilizado por el `ConfigModule` de NestJS para ser consumido en todo el proyecto
 por medio de la injection del `ConfigService`.
 
 Por otro lado, también cuenta con la implementación de `Configstore`, que es para guardar configuración a nivel usuario,
@@ -102,11 +101,11 @@ Para cambiar el nombre del comando CLI que se ejecuta desde terminal, modificá 
 
 ```json
 {
-    //...
-    "bin": {
-      "nestjs-cli-starter": "dist/main.js"
-    },
-    //...
+  //...
+  "bin": {
+    "nestjs-cli-starter": "dist/main.js"
+  }
+  //...
 }
 ```
 
@@ -114,8 +113,8 @@ Para cambiar el nombre del comando CLI que se ejecuta desde terminal, modificá 
 
 ### 🚀 Probar la CLI localmente
 
-Primero ejecutas el script `build:local`, una vez que finaliza el script, este se encarga de hacer ejecutable el bundle 
-final con el script `postbuild` y luego lo linkea como paquete. 
+Primero ejecutas el script `build:local`, una vez que finaliza el script, este se encarga de hacer ejecutable el bundle
+final con el script `postbuild` y luego lo linkea como paquete.
 
 Para probar el comando localmente debes ejecutar el comando en la terminal:
 
@@ -129,6 +128,7 @@ y luego volver a realizar los pasos anteriores.
 ```shell
 npm i -g .
 ```
+
 ```shell
 yarn global add file:.
 ```
@@ -142,6 +142,7 @@ Realiza el build de la CLI
 ```
 yarn build
 ```
+
 ```
 npm run build
 ```
@@ -151,6 +152,7 @@ Hace que el bundle generado por el build sea ejecutable
 ```
 yarn postbuild
 ```
+
 ```
 npm run postbuild
 ```
@@ -160,6 +162,7 @@ Realiza el build de la CLI, lo transforma en ejecutable y lo linkea como paquete
 ```
 yarn build:local
 ```
+
 ```
 npm run build:local
 ```
@@ -169,6 +172,7 @@ Inicia los test con coverage
 ```
 yarn test
 ```
+
 ```
 npm run test
 ```
@@ -178,6 +182,7 @@ Des-linkea el paquete de npm
 ```
 yarn unlink
 ```
+
 ```
 npm run unlink
 ```
@@ -189,6 +194,7 @@ Formatea el código
 ```
 yarn format
 ```
+
 ```
 npm run format
 ```
@@ -198,6 +204,7 @@ Eslintea el código
 ```
 yarn lint
 ```
+
 ```
 npm run lint
 ```
@@ -205,21 +212,20 @@ npm run lint
 ### 🧩 Diferencias entre Argumentos, Opciones y Flags
 
 | Tipo          | ¿Qué es?                                                                                                         | Ejemplo CLI                                      |
-|---------------|------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| ------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | **Argumento** | Valor posicional requerido u opcional para el comando.                                                           | `my-cli generate module auth`                    |
 | **Opción**    | Parámetro con valor que modifica el comportamiento. Se pasa con `--clave`.                                       | `my-cli deploy --env production`                 |
 | **Flag**      | Forma específica de escribir una opción, es decir, un parámetro booleano (encendido/apagado). No necesita valor. | `my-cli build --dry-run` <br/> `my-cli build -d` |
 
 ### 📌 Nomenclatura de uso
 
-| Forma         | ¿Qué significa?               | Ejemplo                          | 
-|---------------|-------------------------------|----------------------------------|
-| `<valor>`     | Argumento obligatorio	        | `my-cli login <env>`             |
-| `[valor]`     | Argumento opcional	           | `my-cli login [user]`            |
-| `--flag`      | Opción sin valor (flag)       | `my-cli build --dry-run`         | 
-| `--key <val>` | Opción con valor obligatorio	 | `my-cli deploy --env production` | 
-| `--key [val]` | Opción con valor opcional	    | `my-cli deploy --env`            | 
-
+| Forma         | ¿Qué significa?              | Ejemplo                          |
+| ------------- | ---------------------------- | -------------------------------- |
+| `<valor>`     | Argumento obligatorio        | `my-cli login <env>`             |
+| `[valor]`     | Argumento opcional           | `my-cli login [user]`            |
+| `--flag`      | Opción sin valor (flag)      | `my-cli build --dry-run`         |
+| `--key <val>` | Opción con valor obligatorio | `my-cli deploy --env production` |
+| `--key [val]` | Opción con valor opcional    | `my-cli deploy --env`            |
 
 <a name="commits"></a>
 
