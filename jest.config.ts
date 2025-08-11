@@ -10,8 +10,8 @@ dotenv.config({
 
 const config: Config = {
   ...jestConfig(),
-  //globalSetup: './jest.globalSetup.ts',
-  //globalTeardown: './jest.globalTeardown.ts',
+  roots: ['<rootDir>/src/'],
+  transformIgnorePatterns: ['/node_modules/(?!chalk|ora)/'],
 };
 
 export default config;

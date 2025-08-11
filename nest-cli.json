@@ -3,8 +3,8 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "plugins": ["@nestjs/swagger"],
+    "deleteOutDir": true,
     "webpack": true,
-    "webpackConfigPath": "./node_modules/@tresdoce-nestjs-toolkit/commons/dist-src/build-config/webpack.config.js"
+    "webpackConfigPath": "./node_modules/@tresdoce-nestjs-toolkit/commons/dist-src/build-config/cli-starter/webpack.config.js"
   }
 }
