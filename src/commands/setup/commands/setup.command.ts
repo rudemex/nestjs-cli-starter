@@ -2,7 +2,7 @@ import { Command, CommandRunner, InquirerService, Option, Help } from 'nest-comm
 import ora, { Ora } from 'ora';
 import chalk from 'chalk';
 
-import { TelemetryService } from '../../../telemetry/telemetry.service';
+import { TelemetryService } from '../../../telemetry/services/telemetry.service';
 
 /**
  * Root-level command that configures the project environment.
