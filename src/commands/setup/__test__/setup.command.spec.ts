@@ -7,7 +7,7 @@ import chalk from 'chalk';
 
 import { SetupModule } from '../setup.module';
 import { SetupCommand } from '../commands/setup.command';
-import { TelemetryService } from '../../../telemetry/telemetry.service';
+import { TelemetryService } from '../../../telemetry/services/telemetry.service';
 import { config } from '../../../config';
 
 const mockSpinner = {
