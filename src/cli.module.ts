@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { ConfigStoreModule } from './config-store/config-store.module';
+import { UpdateNotifierModule } from './update-notifier/update-notifier.module';
 import { config } from './config';
 
 import { AddModule } from './commands/add/add.module';
@@ -14,6 +16,8 @@ import { InfoModule } from './commands/info/info.module';
       isGlobal: true,
       ignoreEnvFile: true,
     }),
+    ConfigStoreModule,
+    UpdateNotifierModule,
     AddModule,
     InfoModule,
     SetupModule,

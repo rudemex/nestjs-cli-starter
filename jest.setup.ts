@@ -15,6 +15,11 @@ jest.mock('inquirer', () => ({
   Separator: function () {},
 }));
 
+jest.mock('update-notifier', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ update: undefined, notify: jest.fn() })),
+}));
+
 expect.extend({
   /**
    * Verifica si un array contiene al menos un objeto con las propiedades esperadas.
