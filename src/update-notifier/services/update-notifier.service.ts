@@ -25,8 +25,8 @@ export class UpdateNotifierService implements OnApplicationBootstrap {
     }
 
     const pkg = {
-      name,
-      version,
+      name, // 'public-ip'
+      version, // '0.9.2'
     };
 
     const interval: number =
@@ -34,7 +34,7 @@ export class UpdateNotifierService implements OnApplicationBootstrap {
 
     const notifier: UpdateNotifier = updateNotifier({
       pkg,
-      updateCheckInterval: interval,
+      updateCheckInterval: interval, // 0
     });
 
     if (!notifier.update) return;

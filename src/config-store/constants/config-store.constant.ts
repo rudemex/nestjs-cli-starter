@@ -21,7 +21,7 @@ export const DEFAULT_CONFIG_STORE: ConfigStoreData = {
 
   update: {
     check: true,
-    intervalMs: 0, //1000 * 60 * 60 * 12, // 12 hours
+    intervalMs: 1000 * 60 * 60 * 12, // 12 hours
   },
 
   telemetry: {
