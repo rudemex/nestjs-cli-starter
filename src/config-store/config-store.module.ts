@@ -17,13 +17,8 @@ import { config } from '../config';
        */
       provide: CONFIG_STORE,
       inject: [config.KEY],
-      useFactory: (appConfig: ConfigType<typeof config>) => {
-        const name: string = appConfig.project?.name;
-        if (!name) {
-          throw new Error('Missing "project.name" in configuration.');
-        }
-        return new Configstore(`${name}/config`, {});
-      },
+      useFactory: (appConfig: ConfigType<typeof config>) =>
+        new Configstore(`${appConfig.project?.name}/config`, {}),
     },
     {
       /**
