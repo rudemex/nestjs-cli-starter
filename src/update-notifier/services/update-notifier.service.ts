@@ -42,10 +42,14 @@ export class UpdateNotifierService implements OnApplicationBootstrap {
     const { current, latest }: UpdateInfo = notifier.update;
     const pkgManager: PkgManager =
       this.store.get<PkgManager>('pkgManager') ?? DEFAULT_CONFIG_STORE.pkgManager;
-    const updateCommand = pkgManager === 'npm' ? `npm i -g ${name}` : `yarn global add ${name}`;
+    const updateCommand: string =
+      pkgManager === 'npm' ? `npm i -g ${name}` : `yarn global add ${name}`;
+
+    const currentVersion = `v${current}`;
+    const latestVersion = `v${latest}`;
 
     const message =
-      `🎉 ${chalk.cyan.bold('New version available!')} ${chalk.dim(`v${current}`)} ${chalk.reset('≫')} ${chalk.green(`v${latest}`)}\n\n` +
+      `🎉 ${chalk.cyan.bold('New version available!')} ${chalk.dim(currentVersion)} ${chalk.reset('≫')} ${chalk.green(latestVersion)}\n\n` +
       `${chalk.yellow(' It is recommended to update to access new features and improve stability. ')}\n\n` +
       `💻 Run "${chalk.blueBright(updateCommand)}" to update 🚀`;
 
