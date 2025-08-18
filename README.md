@@ -5,7 +5,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/static/v1.svg?style=flat&label=NodeJS&message=v20.19.3&labelColor=339933&color=757575&logoColor=FFFFFF&logo=Node.js" alt="Node.js"/>
-    <img src="https://img.shields.io/static/v1.svg?style=flat&label=NPM&message=v11.2.0&labelColor=CB3837&logoColor=FFFFFF&color=757575&logo=npm" alt="Npm"/>
+    <img src="https://img.shields.io/static/v1.svg?style=flat&label=NPM&message=v11.5.2&labelColor=CB3837&logoColor=FFFFFF&color=757575&logo=npm" alt="Npm"/>
     <img src="https://img.shields.io/static/v1.svg?style=flat&label=NestJS&message=v11.1.6&labelColor=E0234E&logoColor=FFFFFF&color=757575&logo=Nestjs" alt="NestJs"/>
     <a href="https://github.com/rudemex/nestjs-cli-starter/releases/latest">
         <img alt="Last Release" src="https://img.shields.io/github/v/tag/rudemex/nestjs-cli-starter?label=release">
@@ -71,7 +71,7 @@ robusta, organizada y fácil de mantener.</p>
 ## 📝 Requisitos
 
 - NodeJS ≥ 20.19.3 ([descargar](https://nodejs.org/es/download/))
-- Yarn ≥ 1.22.22 o Npm ≥ 11.2.0
+- Yarn ≥ 1.22.22 o Npm ≥ 11.5.2
 - NestJS ≥ v11.1.6 ([Documentación](https://nestjs.com/))
 
 <a name="install-dependencies"></a>
