@@ -2,6 +2,16 @@
 
 ---
 
+### [1.0.2](https://github.com/rudemex/nestjs-cli-starter/compare/v1.0.1...v1.0.2) (2025-08-18)
+
+### 👨‍💻 Chores
+
+- update dependencies ([cb315bb](https://github.com/rudemex/nestjs-cli-starter/commit/cb315bb78e1ea4f3bfe6c8d36e124497a53e89ae))
+
+### 📝 Docs
+
+- edit readme ([b94749e](https://github.com/rudemex/nestjs-cli-starter/commit/b94749e684f308e6cfc5a5ff50017fcbef8a0c40))
+
 ### 1.0.1 (2025-08-14)
 
 ### 📝 Docs
